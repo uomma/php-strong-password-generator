@@ -1,13 +1,12 @@
 <?php
+$password_length = isset($_GET['password-length']) ? $_GET['password-length'] : 0;
+$password = '';
 
-if (isset($_GET['password-length'])) {
-
-    /*     var_dump($_GET['password-length']); */
-
-    $password_length = $_GET['password-length'];
-
+function creaPassword($length)
+{
 
 
+    $password = '';
 
 
     $caratteri_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -19,14 +18,18 @@ if (isset($_GET['password-length'])) {
 
     $caratteri_all = array_merge($caratteri_lower, $caratteri_numbers, $caratteri_specials, $caratteri_upper);
 
-    $password = '';
 
-    for ($i = 1; $i <= $password_length; $i++) {
+    for ($i = 1; $i <= $length; $i++) {
         $random = rand(0, count($caratteri_all) - 1);
         $password .= $caratteri_all[$random];
     }
 
-    var_dump($password);
+
+    return $password;
+}
+//se non è vuota la length impostata da user => crea password a cui passiamo la length della password. il risultato viene poi salvato in $password
+if (!empty($password_length)) {
+$password = creaPassword($password_length);
 }
 
 
@@ -51,13 +54,13 @@ if (isset($_GET['password-length'])) {
     <form action="index.php" method="GET">
         <div class="mb-3">
             <label for="password-length" class="form-label">password-length</label>
-            <input type="number" name="password-length" class="form-control" id="password-length" min="8" max="25">
+            <input type="number" value="<?php echo $password_length ?>" name="password-length" class="form-control" id="password-length" min="8" max="25">
         </div>
         <button type="submit" class="btn btn-primary">Submitta</button>
 
         <?php if ($password) : ?>
             <div class="alert alert-success" role="alert">
-               <?php echo $password ?>
+                <?php echo $password ?>
             </div>
         <?php endif ?>
 
