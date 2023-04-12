@@ -2,20 +2,31 @@
 
 if (isset($_GET['password-length'])) {
 
-    var_dump($_GET['password-length']);
+    /*     var_dump($_GET['password-length']); */
+
+    $password_length = $_GET['password-length'];
 
 
-    $caratteri=[
-        ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
-        ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-        ["0","1","2","3","4","5","6","7","8","9"],
-        ["!","£","$","%","&","/","@","#","*","?"],
-        ];
 
 
-        var_dump($caratteri);
+
+    $caratteri_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    $caratteri_upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    $caratteri_numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    $caratteri_specials = ["!", "£", "$", "%", "&", "/", "@", "#", "*", "?"];
 
 
+
+    $caratteri_all = array_merge($caratteri_lower, $caratteri_numbers, $caratteri_specials, $caratteri_upper);
+
+    $password = '';
+
+    for ($i = 1; $i <= $password_length; $i++) {
+        $random = rand(0, count($caratteri_all) - 1);
+        $password .= $caratteri_all[$random];
+    }
+
+    var_dump($password);
 }
 
 
@@ -43,6 +54,14 @@ if (isset($_GET['password-length'])) {
             <input type="number" name="password-length" class="form-control" id="password-length" min="8" max="25">
         </div>
         <button type="submit" class="btn btn-primary">Submitta</button>
+
+        <?php if ($password) : ?>
+            <div class="alert alert-success" role="alert">
+               <?php echo $password ?>
+            </div>
+        <?php endif ?>
+
+
     </form>
 </body>
 
