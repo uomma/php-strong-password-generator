@@ -1,21 +1,20 @@
 <?php
 
 
-require_once __DIR__.'/functions.php';   
+require_once __DIR__ . '/functions.php';
 
-
+session_start();
 
 $password_length = isset($_GET['password-length']) ? $_GET['password-length'] : 0;
 $password = '';
 
 
-
-
 //se non è vuota la length impostata da user => crea password a cui passiamo la length della password. il risultato viene poi salvato in $password
 if (!empty($password_length)) {
-$password = creaPassword($password_length);
+    $password = creaPassword($password_length);
+    $_SESSION['password'] = $password;
+    header('location: ./result.php');
 }
-
 
 ?>
 
@@ -46,9 +45,7 @@ $password = creaPassword($password_length);
             <div class="alert alert-success" role="alert">
                 <?php echo $password ?>
             </div>
-        <?php endif ?>
-
-
+        <?php endif ?>  
     </form>
 </body>
 
